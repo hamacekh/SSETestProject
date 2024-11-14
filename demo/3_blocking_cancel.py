@@ -1,4 +1,3 @@
-# The following code originates from starlette.concurrency library
 import asyncio
 import gc
 import threading
@@ -37,11 +36,11 @@ async def async_task():
 
 
 async def main():
-    async with anyio.create_task_group() as tg:
-        tg.start_soon(async_task)
-        await asyncio.sleep(3)  # Let the task run for a bit
-        tprint("Cancelling the async task")
-        tg.cancel_scope.cancel()  # Cancel the task
+    tprint("Main starts")
+    task = asyncio.create_task(async_task())
+    await asyncio.sleep(3)  # Let the task run for a bit
+    tprint("Cancelling the async task")
+    task.cancel()  # Cancel the task
 
     tprint("The app keeps running")
     await asyncio.sleep(20)

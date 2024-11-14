@@ -73,17 +73,16 @@ async def async_task():
 
 
 async def main():
-    async with anyio.create_task_group() as tg:
-        tg.start_soon(async_task)
-        await asyncio.sleep(3)  # Let the task run for a bit
-        tprint("Cancelling the async task")
-        tg.cancel_scope.cancel()  # Cancel the task
+    task = asyncio.create_task(async_task())
+    await asyncio.sleep(3)  # Let the task run for a bit
+    tprint("Cancelling the async task")
+    task.cancel()  # Cancel the task
 
     tprint("The app keeps running")
     await asyncio.sleep(1)
     tprint("Requesting gc")
     gc.collect()
-    await asyncio.sleep(1) # wait for a bit so gc has a chance to complete
+    await asyncio.sleep(5) # wait for a bit so gc has a chance to complete
     tprint("The app stops")
 
 

@@ -15,18 +15,18 @@ async def worker():
         tprint("Worker completed")
     except asyncio.CancelledError:
         tprint("Worker was cancelled")
-        raise  # Re-raise to propagate the cancellation
+        raise
 
 
 async def main():
     task = asyncio.create_task(worker())
+    tprint("Main keeps running")
     await asyncio.sleep(3.1)  # Allow the worker to run for a bit
     tprint("Cancelling the worker task")
     task.cancel()  # Initiate cancellation
-    try:
-        await task
-    except asyncio.CancelledError:
-        tprint("Main caught the cancellation of worker")
+    await asyncio.sleep(4)
+    tprint("Main app stops")
+
 
 
 asyncio.run(main())
