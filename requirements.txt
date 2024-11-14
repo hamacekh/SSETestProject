@@ -1,0 +1,7 @@
+fastapi
+sse-starlette
+uvicorn[standard]
+httpx
+requests
+aiohttp
+colorlog
